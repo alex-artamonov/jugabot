@@ -14,8 +14,9 @@ commands = [f"/{ele}" for ele in ks.tiempos_list()]
 
 # table = "yo\t\tpuedo\ntu\t\tpuedes\nel\t\tpuede"
 # tiempos_list = ks.tiempos_list
-current_verb = ""
-conju_dict = {}
+current_verbs = {}
+conju_dicts = {}
+
 
 @bot.message_handler(commands=ks.tiempos_list())
 def show_tense(message):
@@ -35,7 +36,8 @@ def show_tense(message):
     tiempo = message.text[1:] #get rid of '\' before the command
     # bot.send_message(message.chat.id, f"Hola, {message.chat.first_name}")
     try:
-        output = cf.get_conj(conju_dict, current_verb, tiempo)
+        output = cf.get_conj(conju_dicts[message.chat.id], \
+                             current_verbs[message.chat.id], tiempo)
     except KeyError:
         output = "Algo salió mal: no pude encontrar esta vez. \
             Tal vez hay que escribir un verbo"
@@ -45,13 +47,14 @@ def show_tense(message):
 
 @bot.message_handler(content_types=['text'], )
 def get_verb(message: telebot.types.Message):
-    global current_verb
-    current_verb = message.text
+    # global current_verb
+    current_verbs[message.chat.id] = message.text
+    current_verb = current_verbs[message.chat.id]
     global conju_dict
     tiempo = 'presente_indicativo'
     try:
-        conju_dict = cf.get_conju_dicts(current_verb)
-        output = cf.get_conj(conju_dict, current_verb, tiempo)
+        conju_dicts[message.chat.id] = cf.get_conju_dicts(current_verb)
+        output = cf.get_conj(conju_dicts[message.chat.id], current_verb, tiempo)
         # print(conju_dict)
     except cf.NoResultset:
         output = "Solo se verbos españolos. No pude encontrar este verbo."    
