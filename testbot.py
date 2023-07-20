@@ -49,13 +49,14 @@ def show_tense(message):
     content_types=["text"],
 )
 def get_verb(message: telebot.types.Message):
-    # global current_verb
-    current_verbs[message.chat.id] = message.text
-    current_verb = current_verbs[message.chat.id]
+    # global current_verb   
+    
     # global conju_dict
     tiempo = "presente_indicativo"
     try:
-        conju_dicts[message.chat.id] = cf.get_conju_dicts(current_verb)
+        conju_dicts[message.chat.id] = cf.get_conju_dicts(message.text)
+        current_verbs[message.chat.id] = message.text
+        current_verb = current_verbs[message.chat.id]
         output = cf.get_conj(conju_dicts[message.chat.id], current_verb, tiempo)
         # print(conju_dict)
     except cf.NoResultset:

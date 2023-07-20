@@ -92,6 +92,6 @@ def get_conj(conju_dict, verb, tiempo="presente_indicativo"):
     Return: return_description
     """
 
-    output = f"<b>{verb}</b>: {tiempo}\n<pre>{prettify_dict(conju_dict[tiempo])}</pre>"
+    output = f"<b>{verb}</b>: {tiempo.replace('_', ' ')}\n<pre>{prettify_dict(conju_dict[tiempo])}</pre>"
     # print(output)
     return output
