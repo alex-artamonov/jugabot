@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup, element
 import requests
 
+
 def read_conj(verb):
 
     """Returns the table of conjugation of a given Spanish verb"""
@@ -11,6 +12,7 @@ def read_conj(verb):
     soup = BeautifulSoup(html, "lxml")
     return soup.find_all("table", class_="neoConj")
 
+
 # print(soup.head.title.contents)
 # print(soup.body.a.text)
 # print(soup.find_all('h3')[0].next)
@@ -18,8 +20,6 @@ def read_conj(verb):
 
 # for ele in sp:
 #     print(ele.text)
-
-
 
 
 # result = []

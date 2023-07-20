@@ -5,7 +5,6 @@ from flask import Flask
 app = Flask(__name__)
 
 
-
 @app.route("/")
 def get_info(word):
     url = "https://api.dictionaryapi.dev/api/v2/entries/en/{}".format(word)

@@ -5,9 +5,12 @@ import read_web as rw
 Functions to handle raw input from Spanish conjugations 
 on https://wordreference.com
 """
+
+
 class NoResultset(Exception):
     "Raised when the query returns no resultset"
     pass
+
 
 def parse_conj(text: str, keys, new_keys):
     """Parse a text to cut out given key strings to create a
@@ -28,18 +31,20 @@ def parse_conj(text: str, keys, new_keys):
     output[new_keys[i]] = text[start:].strip()
     return output
 
+
 # def handle_tiempo(tiempo: tuple):
 #     return f"{tiempo[1]} {tiempo[0]}"
 
+
 def get_conju_dicts(verb):
-    """sumary_line    
+    """sumary_line
     argument -- string - a Spanish verb
     Return: dictionary of dictionaries of tenses of conjugation of a given Spanish verb
     """
     conj_resultset = rw.read_conj(verb)
     if not conj_resultset:
         raise NoResultset
-    text = ''
+    text = ""
     for ele in conj_resultset:
         text += ele.text
     keys_tiempos = [ele[2] for ele in ks.tiempos]
@@ -50,24 +55,26 @@ def get_conju_dicts(verb):
     for ele in dict_content:
         # if not ele[0] == ks.IMPERATIVO:
         if not ks.IMPERATIVO in ele:
-            dict_content[ele] = parse_conj(dict_content[ele], \
-                                            ks.pronouns, ks.pronouns_short)
+            dict_content[ele] = parse_conj(
+                dict_content[ele], ks.pronouns, ks.pronouns_short
+            )
         else:
-            dict_content[ele] = parse_conj(dict_content[ele], \
-                                ks.pronouns_imperativo, ks.pronouns_imperativo_short)
-    return dict_content 
+            dict_content[ele] = parse_conj(
+                dict_content[ele], ks.pronouns_imperativo, ks.pronouns_imperativo_short
+            )
+    return dict_content
 
 
-def prettify_dict(conju_dict: dict, padding = 16, no_vos = True):
+def prettify_dict(conju_dict: dict, padding=16, no_vos=True):
     """
     To convert a dictionary with conjugation
     into a table-looking string. Omitting the 'vos' line by default
     """
-    output = ''
+    output = ""
 
     if no_vos:
         for ele in conju_dict:
-            if not ele in ('vos', '(vos)'):
+            if not ele in ("vos", "(vos)"):
                 output += f"{ele.ljust(padding)}{conju_dict[ele]}\n"
     else:
         for ele in conju_dict:
@@ -75,15 +82,16 @@ def prettify_dict(conju_dict: dict, padding = 16, no_vos = True):
 
     return output
 
-def get_conj(conju_dict, verb, tiempo = 'presente_indicativo'):
+
+def get_conj(conju_dict, verb, tiempo="presente_indicativo"):
     """
     Builds a string to represent a conjugation table of a given verb
     for a given tense
     Keyword arguments:
-    argument -- 
+    argument --
     Return: return_description
-    """   
-    
+    """
+
     output = f"<b>{verb}</b>: {tiempo}\n<pre>{prettify_dict(conju_dict[tiempo])}</pre>"
     # print(output)
     return output
