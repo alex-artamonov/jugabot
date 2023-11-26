@@ -3,11 +3,9 @@ from telegram.constants import ParseMode
 from telebot import types
 import conj_funcs as cf
 import keys as ks
+import config
 
-
-TOKEN = "6303319026:AAFpGl2CnTr8bP0J9i5iMhjRkGP35HRhAMY"
-
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(config.TOKEN)
 commands = [f"/{ele}" for ele in ks.tiempos_list()]
 # commands.append('/start')
 # print(commands)
