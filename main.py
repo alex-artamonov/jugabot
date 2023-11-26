@@ -7,24 +7,15 @@ import config
 
 bot = telebot.TeleBot(config.TOKEN)
 commands = [f"/{ele}" for ele in ks.tiempos_list()]
-# commands.append('/start')
-# print(commands)
-
-# table = "yo\t\tpuedo\ntu\t\tpuedes\nel\t\tpuede"
-# tiempos_list = ks.tiempos_list
 current_verbs = {}
 conju_dicts = {}
 
 
 @bot.message_handler(commands=ks.tiempos_list())
 def show_tense(message):
-    # print(commands)
-
     name = message.chat.first_name
     cid = message.chat.id
     print(message.text, name, cid)
-    # print(dir(message))
-    # fid = message.from.id
     if message.text == "/start":
         output = f"¡Hola, {name}! \
         Escribe un verbo español en infinitivo (e.g. <b>comer</b>) para obtener sus conjugaciones"
@@ -32,7 +23,6 @@ def show_tense(message):
         return
 
     tiempo = message.text[1:]  # get rid of '\' before the command
-    # bot.send_message(message.chat.id, f"Hola, {message.chat.first_name}")
     try:
         output = cf.get_conj(
             conju_dicts[message.chat.id], current_verbs[message.chat.id], tiempo
@@ -47,19 +37,14 @@ def show_tense(message):
     content_types=["text"],
 )
 def get_verb(message: telebot.types.Message):
-    # global current_verb   
-    
-    # global conju_dict
     tiempo = "presente_indicativo"
     try:
         conju_dicts[message.chat.id] = cf.get_conju_dicts(message.text)
         current_verbs[message.chat.id] = message.text
         current_verb = current_verbs[message.chat.id]
         output = cf.get_conj(conju_dicts[message.chat.id], current_verb, tiempo)
-        # print(conju_dict)
     except cf.NoResultset:
         output = "Solo se verbos españolos. No pude encontrar este verbo."
-    # bot.reply_to(message, get_conj(message.text), parse_mode=ParseMode.HTML)
 
     bot.send_message(
         message.chat.id,
@@ -70,7 +55,6 @@ def get_verb(message: telebot.types.Message):
 
 
 def create_command_buttons():
-    # commands_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     commands_markup = types.ReplyKeyboardMarkup(is_persistent=True)
     for command in commands:
         commands_markup.add(types.KeyboardButton(command))
