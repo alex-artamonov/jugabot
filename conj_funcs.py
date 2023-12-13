@@ -41,7 +41,8 @@ def get_conju_dicts(verb):
     argument -- string - a Spanish verb
     Return: dictionary of dictionaries of tenses of conjugation of a given Spanish verb
     """
-    conj_resultset = rw.read_conj(verb)
+    all_conj = rw.read_conj(verb)
+    conj_resultset = all_conj[0]
     if not conj_resultset:
         raise NoResultset
     text = ""
@@ -62,7 +63,11 @@ def get_conju_dicts(verb):
             dict_content[ele] = parse_conj(
                 dict_content[ele], ks.pronouns_imperativo, ks.pronouns_imperativo_short
             )
-    return dict_content
+    impersonal_resultset = all_conj[1]
+    text = impersonal_resultset.getText(separator="|", strip=True)
+    lst = text.split("|")
+    dct_impersonal = {x: y for x, y in zip(lst[:3], lst[4:7])}
+    return dict_content, dct_impersonal
 
 
 def prettify_dict(conju_dict: dict, padding=16, no_vos=True):

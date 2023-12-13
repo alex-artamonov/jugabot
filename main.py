@@ -32,7 +32,15 @@ def show_tense(message):
             Tal vez hay que escribir un verbo"
         bot.send_message(message.chat.id, output, parse_mode=ParseMode.HTML)
         return
-    tiempo = message.text[1:]  # get rid of '\' before the command
+    if message.text == "/translation":
+        try:
+            output = "https://www.wordreference.com/es/en/translation.asp?spen=" + current_verbs[message.chat.id]
+        except KeyError:
+            output = "Algo salió mal: no pude encontrar esta vez. \
+            Tal vez hay que escribir un verbo"
+        bot.send_message(message.chat.id, output)
+        return
+    tiempo = message.text[1:]  # get rid of '/' before the command
     try:
         output = cf.get_conj(
             conju_dicts[message.chat.id], current_verbs[message.chat.id], tiempo

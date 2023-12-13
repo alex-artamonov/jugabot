@@ -86,7 +86,9 @@ pronouns_imperativo_short = (
 def tiempos_list():
     """Builds a list of commands of tenses"""
     commands = ["impersonal_forms"]
+    commands.append("translation")
     commands.extend([f"{ele[1].replace(' ', '_')}_{ele[0]}" for ele in tiempos])
+    # commands.extend([f"{ele[1]} {ele[0]}" for ele in tiempos])
     commands.append("start")
 
     return commands
