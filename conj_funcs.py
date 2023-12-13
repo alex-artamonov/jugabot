@@ -82,6 +82,13 @@ def prettify_dict(conju_dict: dict, padding=16, no_vos=True):
 
     return output
 
+def table_impersonal(d: dict, padding=16):
+    output = "<pre>"
+    for ele in d:
+        output += f"{ele.ljust(padding)}{d[ele]}\n"
+    output += "</pre>"
+    return output
+
 
 def get_conj(conju_dict, verb, tiempo="presente_indicativo"):
     """
