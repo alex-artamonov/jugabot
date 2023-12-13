@@ -7,6 +7,7 @@ import os
 
 TOKEN = os.environ["JUGABOT"]
 bot = telebot.TeleBot(TOKEN)
+print(bot.get_me())
 commands = [f"/{ele}" for ele in ks.tiempos_list()]
 current_verbs = {}
 conju_dicts = {}
