@@ -3,9 +3,12 @@ from telegram.constants import ParseMode
 from telebot import types
 import conj_funcs as cf
 import keys as ks
-import config
+# import config
+import os
 
-bot = telebot.TeleBot(config.TOKEN)
+TOKEN = os.environ["JUGABOT"]
+print(TOKEN)
+bot = telebot.TeleBot(TOKEN)
 commands = [f"/{ele}" for ele in ks.tiempos_list()]
 current_verbs = {}
 conju_dicts = {}
